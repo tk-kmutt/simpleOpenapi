@@ -41,9 +41,9 @@ func (p *PetUsecase) FindPets(ctx echo.Context, params gen.FindPetsParams) error
 	}
 	sort.SliceStable(keys, func(i, j int) bool {
 		if isAsc {
-			return keys[int64(i)] < keys[int64(j)]
+			return keys[gen.ID(i)] < keys[gen.ID(j)]
 		}
-		return keys[int64(j)] < keys[int64(i)]
+		return keys[gen.ID(j)] < keys[gen.ID(i)]
 	})
 
 	fmt.Println(keys)
@@ -87,16 +87,14 @@ func (p *PetUsecase) AddPet(ctx echo.Context) error {
 
 	// We handle pets, not NewPets, which have an additional ID field
 	res := gen.PetResponse{
-		Id: p.NextId,
 		Pet: gen.Pet{
+			Id:   &p.NextId,
 			Name: req.Name,
 			Tag:  req.Tag,
 		},
 	}
+	p.Pets[p.NextId] = res
 	p.NextId = p.NextId + 1
-
-	// Insert into map
-	p.Pets[res.Id] = res
 
 	// Now, we have to return the NewPet
 	err = ctx.JSON(http.StatusCreated, res)

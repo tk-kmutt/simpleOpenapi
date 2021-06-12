@@ -11,7 +11,8 @@ type Error struct {
 
 // Pet defines model for Pet.
 type Pet struct {
-	Name string  `json:"name"`
+	Id   *int64  `json:"id,omitempty"`
+	Name *string `json:"name,omitempty"`
 	Tag  *string `json:"tag,omitempty"`
 }
 
@@ -19,21 +20,31 @@ type Pet struct {
 type PetResponse struct {
 	// Embedded struct due to allOf(#/components/schemas/Pet)
 	Pet `yaml:",inline"`
-	// Embedded fields due to inline allOf schema
-	Id int64 `json:"id"`
 }
+
+// ID defines model for ID.
+type ID int64
+
+// Limit defines model for Limit.
+type Limit int32
+
+// Order defines model for Order.
+type Order string
+
+// PetTags defines model for PetTags.
+type PetTags []string
 
 // FindPetsParams defines parameters for FindPets.
 type FindPetsParams struct {
 
 	// tags to filter by
-	Tags *[]string `json:"tags,omitempty"`
+	Tags *PetTags `json:"tags,omitempty"`
 
 	// maximum number of results to return
-	Limit *int32 `json:"limit,omitempty"`
+	Order *Order `json:"order,omitempty"`
 
 	// maximum number of results to return
-	Order *string `json:"order,omitempty"`
+	Limit *Limit `json:"limit,omitempty"`
 }
 
 // AddPetJSONBody defines parameters for AddPet.
