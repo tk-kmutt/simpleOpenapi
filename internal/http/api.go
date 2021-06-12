@@ -8,11 +8,13 @@ import (
 )
 
 type Api struct {
-	pet *usecase.Pet
+	pet *usecase.PetUsecase
 }
 
 func NewApi() *Api {
-	return &Api{pet: usecase.NewPet()}
+	return &Api{
+		pet: usecase.NewPet(),
+	}
 }
 
 var _ gen.ServerInterface = (*Api)(nil)

@@ -12,7 +12,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: http://petstore.swagger.io/api
+  - url: http://PetResponsestore.swagger.io/api
 paths:
   /pets:
     get:
@@ -39,6 +39,12 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: order
+          in: query
+          description: maximum number of results to return
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: pet response
@@ -47,7 +53,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/PetResponse'
         default:
           description: unexpected error
           content:
@@ -63,14 +69,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewPet'
+              $ref: '#/components/schemas/Pet'
       responses:
         '200':
           description: pet response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/PetResponse'
         default:
           description: unexpected error
           content:
@@ -95,7 +101,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/PetResponse'
         default:
           description: unexpected error
           content:
@@ -124,9 +130,9 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Pet:
+    PetResponse:
       allOf:
-        - $ref: '#/components/schemas/NewPet'
+        - $ref: '#/components/schemas/Pet'
         - type: object
           required:
             - id
@@ -134,8 +140,7 @@ components:
             id:
               type: integer
               format: int64
-
-    NewPet:
+    Pet:
       type: object
       required:
         - name
@@ -144,7 +149,24 @@ components:
           type: string
         tag:
           type: string
-
+    AmazonResponse:
+      allOf:
+        - $ref: '#/components/schemas/Amazon'
+        - type: object
+          required:
+            - asin
+          properties:
+            id:
+              type: string
+    Amazon:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        tag:
+          type: string
     Error:
       type: object
       required:

@@ -9,16 +9,16 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-// NewPet defines model for NewPet.
-type NewPet struct {
+// Pet defines model for Pet.
+type Pet struct {
 	Name string  `json:"name"`
 	Tag  *string `json:"tag,omitempty"`
 }
 
-// Pet defines model for Pet.
-type Pet struct {
-	// Embedded struct due to allOf(#/components/schemas/NewPet)
-	NewPet `yaml:",inline"`
+// PetResponse defines model for PetResponse.
+type PetResponse struct {
+	// Embedded struct due to allOf(#/components/schemas/Pet)
+	Pet `yaml:",inline"`
 	// Embedded fields due to inline allOf schema
 	Id int64 `json:"id"`
 }
@@ -31,10 +31,13 @@ type FindPetsParams struct {
 
 	// maximum number of results to return
 	Limit *int32 `json:"limit,omitempty"`
+
+	// maximum number of results to return
+	Order *string `json:"order,omitempty"`
 }
 
 // AddPetJSONBody defines parameters for AddPet.
-type AddPetJSONBody NewPet
+type AddPetJSONBody Pet
 
 // AddPetJSONRequestBody defines body for AddPet for application/json ContentType.
 type AddPetJSONRequestBody AddPetJSONBody

@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func sendPetstoreError(ctx echo.Context, code int, message string) error {
+func sendError(ctx echo.Context, code int, message string) error {
 	petErr := gen.Error{
 		Code:    int32(code),
 		Message: message,
