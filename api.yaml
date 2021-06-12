@@ -107,24 +107,6 @@ components:
           type: string
         tag:
           type: string
-    AmazonResponse:
-      allOf:
-        - $ref: '#/components/schemas/Amazon'
-        - type: object
-          required:
-            - asin
-          properties:
-            id:
-              type: string
-    Amazon:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        tag:
-          type: string
     Error:
       type: object
       required:
