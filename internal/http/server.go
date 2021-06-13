@@ -6,7 +6,7 @@ import (
 	"simpleOpenapi/internal/http/gen"
 	mm "simpleOpenapi/pkg/middleware"
 
-	middleware2 "github.com/deepmap/oapi-codegen/pkg/middleware"
+	om "github.com/deepmap/oapi-codegen/pkg/middleware"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -27,16 +27,13 @@ func Run() {
 	// validatorの設定
 	e.Validator = mm.NewValidator()
 
-	//TODO what's?  "message": "no matching operation was found"
 	// validator
 	spec, err := gen.GetSwagger()
 	if err != nil {
 		panic(err)
 	}
-	// Clear out the servers array in the swagger spec, that skips validating
-	// that server names match. We don't know how this thing will be run.
-	spec.Servers = nil
-	e.Use(middleware2.OapiRequestValidator(spec))
+	spec.Servers = nil //NOTE これがないとOapiRequestValidatorが動かない、要確認
+	e.Use(om.OapiRequestValidator(spec))
 
 	//mysql connection
 	//TODO 設定ファイルの利用と、database共通処理を作る
