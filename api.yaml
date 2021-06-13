@@ -92,8 +92,232 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /amazons:
+    get:
+      description: get all amazons
+      operationId: findAmazons
+      parameters:
+        - $ref: "#/components/parameters/Order"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Page"
+      responses:
+        '200':
+          description: pet response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AmazonResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: create amazon
+      operationId: createAmazon
+      requestBody:
+        description: to amazon create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Amazon'
+      responses:
+        '200':
+          description: amazon response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmazonResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /amazons/{key}:
+    get:
+      description: get amazon by key
+      operationId: findAmazonByKey
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      responses:
+        '200':
+          description: response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmazonResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: update amazon
+      operationId: updateAmazon
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      requestBody:
+        description: to amazon update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmazonUpdate'
+      responses:
+        '200':
+          description: amazon response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmazonResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      description: patch amazon
+      operationId: patchAmazon
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      requestBody:
+        description: to amazon patch
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmazonPatch'
+      responses:
+        '200':
+          description: amazon response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmazonResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: delete amazon
+      operationId: deleteAmazon
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      responses:
+        '204':
+          description: amazon deleted
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /amazons/inactive/{key}:
+    patch:
+      description: inactive amazon
+      operationId: inactiveAmazon
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      responses:
+        '204':
+          description: amazon inactive
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /amazons/active/{key}:
+    patch:
+      description: active amazon
+      operationId: activeAmazon
+      parameters:
+        - $ref: "#/components/parameters/Key"
+      responses:
+        '204':
+          description: amazon active
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
+    AmazonResponse:
+      allOf:
+        - $ref: '#/components/schemas/Amazon'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              format: int64
+    Amazon:
+      type: object
+      required:
+        - name
+        - asin
+        - maker
+        - price
+        - url
+      properties:
+        name:
+          type: string
+        asin:
+          type: string
+        maker:
+          type: string
+        price:
+          type: integer
+          format: int64
+        url:
+          type: string
+        comment:
+          type: string
+    AmazonUpdate:
+      type: object
+      required:
+        - name
+        - maker
+        - price
+        - url
+      properties:
+        name:
+          type: string
+        maker:
+          type: string
+        price:
+          type: integer
+          format: int64
+        url:
+          type: string
+        comment:
+          type: string
+    AmazonPatch:
+      type: object
+      properties:
+        name:
+          type: string
+        maker:
+          type: string
+        price:
+          type: integer
+          format: int64
+        url:
+          type: string
+        comment:
+          type: string
     PetResponse:
       allOf:
         - $ref: '#/components/schemas/Pet'
@@ -119,6 +343,13 @@ components:
         message:
           type: string
   parameters:
+    Key:
+      name: key
+      in: path
+      description: data key
+      required: true
+      schema:
+        type: string
     ID:
       name: id
       in: path
@@ -137,6 +368,14 @@ components:
         type: array
         items:
           type: string
+    Page:
+      name: page
+      in: query
+      description: pager
+      required: false
+      schema:
+        type: integer
+        format: int32
     Limit:
       name: limit
       in: query
@@ -152,4 +391,3 @@ components:
       required: false
       schema:
         type: string
-
