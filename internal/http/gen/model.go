@@ -22,14 +22,6 @@ type AmazonPatch struct {
 	Url     *string `json:"url,omitempty"`
 }
 
-// AmazonResponse defines model for AmazonResponse.
-type AmazonResponse struct {
-	// Embedded struct due to allOf(#/components/schemas/Amazon)
-	Amazon `yaml:",inline"`
-	// Embedded fields due to inline allOf schema
-	Id int64 `json:"id"`
-}
-
 // AmazonUpdate defines model for AmazonUpdate.
 type AmazonUpdate struct {
 	Comment *string `json:"comment,omitempty"`

@@ -108,7 +108,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AmazonResponse'
+                  $ref: '#/components/schemas/Amazon'
         default:
           description: unexpected error
           content:
@@ -131,7 +131,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmazonResponse'
+                $ref: '#/components/schemas/Amazon'
         default:
           description: unexpected error
           content:
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmazonResponse'
+                $ref: '#/components/schemas/Amazon'
         default:
           description: unexpected error
           content:
@@ -175,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmazonResponse'
+                $ref: '#/components/schemas/Amazon'
         default:
           description: unexpected error
           content:
@@ -200,7 +200,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AmazonResponse'
+                $ref: '#/components/schemas/Amazon'
         default:
           description: unexpected error
           content:
@@ -253,16 +253,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    AmazonResponse:
-      allOf:
-        - $ref: '#/components/schemas/Amazon'
-        - type: object
-          required:
-            - id
-          properties:
-            id:
-              type: integer
-              format: int64
     Amazon:
       type: object
       required:
