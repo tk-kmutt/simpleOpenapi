@@ -8,11 +8,13 @@ import (
 )
 
 type Api struct {
-	pet *usecase.Pet
+	pet *usecase.PetUsecase
 }
 
 func NewApi() *Api {
-	return &Api{pet: usecase.NewPet()}
+	return &Api{
+		pet: usecase.NewPet(),
+	}
 }
 
 var _ gen.ServerInterface = (*Api)(nil)
@@ -24,10 +26,10 @@ func (p *Api) AddPet(ctx echo.Context) error {
 	return p.pet.AddPet(ctx)
 }
 
-func (p *Api) FindPetById(ctx echo.Context, id int64) error {
-	return p.pet.FindPetById(ctx, id)
+func (p *Api) FindPetById(ctx echo.Context, id gen.ID) error {
+	return p.pet.FindPetById(ctx, id.Int64())
 }
 
-func (p *Api) DeletePet(ctx echo.Context, id int64) error {
-	return p.pet.DeletePet(ctx, id)
+func (p *Api) DeletePet(ctx echo.Context, id gen.ID) error {
+	return p.pet.DeletePet(ctx, id.Int64())
 }
