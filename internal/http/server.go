@@ -32,7 +32,6 @@ func Run() {
 	if err != nil {
 		panic(err)
 	}
-	spec.Servers = nil //NOTE これがないとOapiRequestValidatorが動かない、要確認
 	e.Use(om.OapiRequestValidator(spec))
 
 	//mysql connection
