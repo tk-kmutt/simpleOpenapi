@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    container_name: "soa-swagger-editor"
+    ports:
+      - "8002:8080"
+    volumes:
+      - ./api.yaml:/api.yaml
+    environment:
+      SWAGGER_JSON: /api.yaml
+  # MySQL
+  db:
+    image: mysql:5.7
+    container_name: soa-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: simple_openapi
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+    - ./docker/db/data:/var/lib/mysql
+    - ./docker/db/my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+    - 3306:3306
+
+  

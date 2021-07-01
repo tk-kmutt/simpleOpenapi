@@ -21,6 +21,30 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
+	// (GET /amazons)
+	FindAmazons(ctx echo.Context, params FindAmazonsParams) error
+
+	// (POST /amazons)
+	CreateAmazon(ctx echo.Context) error
+
+	// (PATCH /amazons/active/{key})
+	ActiveAmazon(ctx echo.Context, key Key) error
+
+	// (PATCH /amazons/inactive/{key})
+	InactiveAmazon(ctx echo.Context, key Key) error
+
+	// (DELETE /amazons/{key})
+	DeleteAmazon(ctx echo.Context, key Key) error
+
+	// (GET /amazons/{key})
+	FindAmazonByKey(ctx echo.Context, key Key) error
+
+	// (PATCH /amazons/{key})
+	PatchAmazon(ctx echo.Context, key Key) error
+
+	// (PUT /amazons/{key})
+	UpdateAmazon(ctx echo.Context, key Key) error
+
 	// (GET /pets)
 	FindPets(ctx echo.Context, params FindPetsParams) error
 
@@ -37,6 +61,143 @@ type ServerInterface interface {
 // ServerInterfaceWrapper converts echo contexts to parameters.
 type ServerInterfaceWrapper struct {
 	Handler ServerInterface
+}
+
+// FindAmazons converts echo context to params.
+func (w *ServerInterfaceWrapper) FindAmazons(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params FindAmazonsParams
+	// ------------- Optional query parameter "order" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "order", ctx.QueryParams(), &params.Order)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter order: %s", err))
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "limit", ctx.QueryParams(), &params.Limit)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter limit: %s", err))
+	}
+
+	// ------------- Optional query parameter "page" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "page", ctx.QueryParams(), &params.Page)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter page: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.FindAmazons(ctx, params)
+	return err
+}
+
+// CreateAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) CreateAmazon(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.CreateAmazon(ctx)
+	return err
+}
+
+// ActiveAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) ActiveAmazon(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.ActiveAmazon(ctx, key)
+	return err
+}
+
+// InactiveAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) InactiveAmazon(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.InactiveAmazon(ctx, key)
+	return err
+}
+
+// DeleteAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) DeleteAmazon(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.DeleteAmazon(ctx, key)
+	return err
+}
+
+// FindAmazonByKey converts echo context to params.
+func (w *ServerInterfaceWrapper) FindAmazonByKey(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.FindAmazonByKey(ctx, key)
+	return err
+}
+
+// PatchAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) PatchAmazon(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.PatchAmazon(ctx, key)
+	return err
+}
+
+// UpdateAmazon converts echo context to params.
+func (w *ServerInterfaceWrapper) UpdateAmazon(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "key" -------------
+	var key Key
+
+	err = runtime.BindStyledParameterWithLocation("simple", false, "key", runtime.ParamLocationPath, ctx.Param("key"), &key)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter key: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.UpdateAmazon(ctx, key)
+	return err
 }
 
 // FindPets converts echo context to params.
@@ -140,6 +301,14 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
+	router.GET(baseURL+"/amazons", wrapper.FindAmazons)
+	router.POST(baseURL+"/amazons", wrapper.CreateAmazon)
+	router.PATCH(baseURL+"/amazons/active/:key", wrapper.ActiveAmazon)
+	router.PATCH(baseURL+"/amazons/inactive/:key", wrapper.InactiveAmazon)
+	router.DELETE(baseURL+"/amazons/:key", wrapper.DeleteAmazon)
+	router.GET(baseURL+"/amazons/:key", wrapper.FindAmazonByKey)
+	router.PATCH(baseURL+"/amazons/:key", wrapper.PatchAmazon)
+	router.PUT(baseURL+"/amazons/:key", wrapper.UpdateAmazon)
 	router.GET(baseURL+"/pets", wrapper.FindPets)
 	router.POST(baseURL+"/pets", wrapper.AddPet)
 	router.DELETE(baseURL+"/pets/:id", wrapper.DeletePet)
@@ -150,32 +319,37 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
-	"QnYYdrno8pvrV9f27vffAAAA//+QYPkObhEAAA==",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
