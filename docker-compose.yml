@@ -1,10 +1,19 @@
 version: '3'
 
 services:
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    container_name: "soa-swagger-editor"
+    ports:
+      - "8002:8080"
+    volumes:
+      - ./api.yaml:/api.yaml
+    environment:
+      SWAGGER_JSON: /api.yaml
   # MySQL
   db:
     image: mysql:5.7
-    container_name: simple-openapi-mysql
+    container_name: soa-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: simple_openapi
